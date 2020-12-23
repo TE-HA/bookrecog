@@ -25,12 +25,11 @@ data_tf = transforms.Compose(
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
 
-f_front = all_path+'/bag/photo_front.txt'
-f_back = all_path+'/bag/photo_back.txt'
+f_front = all_path+'/bag/front_test.txt'
+f_back = all_path+'/bag/back_test.txt'
 
-model_path_back = '../model/angle_back_resnet18.pth'
-
-model_path_front = '../model/angle_front_resnet18.pth'
+model_path_back = '../model/back.pth'
+model_path_front = '../model/front.pth'
 
 
 test_front_data = AngleDataset(txt_path=f_front, transform=data_tf)
@@ -103,28 +102,34 @@ total = test_front_loader.dataset.__len__()
 
 out_all_front = []
 out_all_front_label = []
+# 分析单个模型的识别正确率
+front_correct = 0
 for img, label in test_front_loader:
     img, label = img.cuda(), label.cuda()
+    # 将loader中获得模型预测结果
     with torch.no_grad():
         out = model_front(img)
         out_all_front.append(out)
         out_all_front_label.append(label)
+        front_correct += torch.eq(out.argmax(dim=1), label).sum().float().item()
 
 out_all_back = []
 out_all_back_label = []
+back_correct = 0
 for img, label in test_back_loader:
     img, label = img.cuda(), label.cuda()
     with torch.no_grad():
         out = model_back(img)
         out_all_back.append(out)
         out_all_back_label.append(label)
+        back_correct += torch.eq(out.argmax(dim=1), label).sum().float().item()
 
+both_correct = 0 # 封面封底均预测正确
+back = 0 # 封面预测错误，封底预测正确
+front = 0 # 封底预测错误，封面预测正确
+wrong = 0 # 封面封底均预测错误
 
-correct = 0
-back = 0
-front = 0
-wrong = 0
-correct_dim = 0
+# 遍历预测结果得出置信度高的预测结果
 for index in range(len(out_all_front)):
     front_out = out_all_front[index]
     back_out = out_all_back[index]
@@ -136,21 +141,25 @@ for index in range(len(out_all_front)):
 
     for count in range(front_pre.shape[0]):
         if front_pre[count] == front_label[count] and back_pre[count] == back_label[count]:
-            correct += 1
+            both_correct += 1
         elif front_pre[count] != front_label[count] and back_pre[count] == back_label[count]:
+            # 如果背面置信度高，则选择相信正面
             if back_out[count].max(dim=0) >= front_out[count].max(dim=0):
                 back += 1
-                correct_dim += 1
         elif front_pre[count] == front_label[count] and back_pre[count] != back_label[count]:
             if back_out[count].max(dim=0) <= front_out[count].max(dim=0):
+                print(back_out[count])
+                print(front_out[count])
+                print()
                 front += 1
-                correct_dim += 1
         else:
             wrong += 1
 
-print(correct)
-print(front)
-print(back)
-print(wrong)
-print(correct_dim)
-print('{:.4f}'.format((correct+correct_dim)/total))
+print('封面模型识别正确率：{:.4f}'.format(front_correct/total))
+print('封底模型识别正确率：{:.4f}'.format(back_correct/total))
+print("封面和封底均识别正确：%d"%both_correct)
+print("封面识别正确：%d"%front)
+print("封底识别正确：%d"%back)
+print("封面和封底均识别错误：%d"%wrong)
+print("总数：%d"%total)
+print('投票之后的正确率：{:.4f}'.format((both_correct+front+back)/total))

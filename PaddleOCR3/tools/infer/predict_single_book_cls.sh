@@ -1,0 +1,1 @@
+python tools/infer/predict_single_book_cls.py --det_model_dir="./inference/ch_ppocr_server_v1.1_det_infer/"  --cls_model_dir="./inference/ch_ppocr_server_v1.1_cls_infer/" --rec_model_dir="./inference/ch_ppocr_server_v1.1_rec_infer/" --use_angle_cls=True --use_space_char=True --image_dirs "../data19/1024x/images_1024x/front_inverse/" "../data19/1024x/images_1024x/front/"

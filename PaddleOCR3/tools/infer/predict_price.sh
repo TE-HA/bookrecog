@@ -1,0 +1,1 @@
+python tools/infer/predict_price.py --det_model_dir="./inference/ch_ppocr_server_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_server_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_server_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True --image_dir "../data19/origin_back/back/"

@@ -1,0 +1,6 @@
+../data19/1024x/images_1024x/front/293649b33876c3d67e89253fb26d8922_front.jpg
+../data19/1024x/images_1024x/front_inverse/293649b33876c3d67e89253fb26d8922_front_inverse.jpg
+../data19/1024x/images_1024x/front_inverse/06de0d99f53be1503292a210f59d4b21_front_inverse.jpg
+../data19/1024x/images_1024x/front_inverse/b1a0f1a780767dda8b4815420d872f0f_front_inverse.jpg
+../data19/1024x/images_1024x/front_inverse/bced00dcd1f5ab90cea274c8520b6984_front_inverse.jpg
+../data19/1024x/images_1024x/front_inverse/a94763f9588a7dccae021b8b66b27b22_front_inverse.jpg

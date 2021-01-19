@@ -1,0 +1,13 @@
+price   -- "定价"
+price_2   -- "0" "元"
+price_server   -- "定价"
+price_server_2   -- "0" "元"
+wrong
+wrong_server
+
+
+-- 识别失败几种情况
+
+1.模糊
+2.无定价
+3.光照

@@ -1,0 +1,1 @@
+python tools/infer/predict_system.py --image_dir="../data19/1024x/images_1024x/back/004102fca93059e52f86de2ece741556_back.jpg" --det_model_dir="./inference/ch_ppocr_server_v1.1_det_infer/"  --rec_model_dir="./inference/ch_ppocr_server_v1.1_rec_infer/" --cls_model_dir="./inference/ch_ppocr_server_v1.1_cls_infer/" --use_angle_cls=True --use_space_char=True
